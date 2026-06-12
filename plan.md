@@ -27,7 +27,7 @@
 - [ ] Install Drizzle ORM and Postgres drivers in `headless-cms-api`.
 - [ ] Configure `drizzle.config.ts` to connect to the self-hosted Supabase instance.
 - [ ] Set up the `DatabaseModule` in NestJS to inject the Drizzle connection.
-- [ ] Define the initial database schema (e.g., `users`, `posts`, `categories`).
+- [ ] Define the initial database schema (e.g., `users`, `posts`, `categories`). **CRITICAL: All database tables MUST use the `headless_cms_` prefix.**
 - [ ] Generate and push the first database migration.
 
 ### Phase 2: Core API Development
