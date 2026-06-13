@@ -1,30 +1,46 @@
 import Link from "next/link";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { FileText, Folder, Users } from "lucide-react";
 
 export default function AdminPage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link
-          href="/admin/posts"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-md transition"
-        >
-          <h2 className="text-lg font-semibold">📝 Posts</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage content</p>
+      <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Link href="/admin/posts">
+          <Card className="hover:bg-zinc-50 transition-colors">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-primary" />
+                <CardTitle>Posts</CardTitle>
+              </div>
+              <CardDescription>Manage your blog content</CardDescription>
+            </CardHeader>
+          </Card>
         </Link>
-        <Link
-          href="/admin/categories"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-md transition"
-        >
-          <h2 className="text-lg font-semibold">📂 Categories</h2>
-          <p className="text-sm text-gray-500 mt-1">Organize content</p>
+
+        <Link href="/admin/categories">
+          <Card className="hover:bg-zinc-50 transition-colors">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Folder className="h-5 w-5 text-primary" />
+                <CardTitle>Categories</CardTitle>
+              </div>
+              <CardDescription>Organize your content</CardDescription>
+            </CardHeader>
+          </Card>
         </Link>
-        <Link
-          href="/admin/users"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-md transition"
-        >
-          <h2 className="text-lg font-semibold">👥 Users</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage users</p>
+
+        <Link href="/admin/users">
+          <Card className="hover:bg-zinc-50 transition-colors">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                <CardTitle>Users</CardTitle>
+              </div>
+              <CardDescription>Manage user accounts</CardDescription>
+            </CardHeader>
+          </Card>
         </Link>
       </div>
     </div>
