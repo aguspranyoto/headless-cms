@@ -43,7 +43,7 @@ export default function VerifyEmailPage() {
   }, [token, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Email Verification</CardTitle>

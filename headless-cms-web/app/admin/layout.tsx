@@ -15,6 +15,7 @@ import {
   SidebarTrigger,
   SidebarFooter
 } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "Admin - Headless CMS",
@@ -34,7 +35,7 @@ export default function AdminLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-zinc-50">
+      <div className="flex min-h-screen w-full bg-background">
         <Sidebar>
           <SidebarHeader className="border-b px-6 py-4">
             <h2 className="text-xl font-bold tracking-tight">Headless CMS</h2>
@@ -61,7 +62,7 @@ export default function AdminLayout({
           <SidebarFooter className="border-t p-4">
              <SidebarMenu>
                <SidebarMenuItem>
-                 <SidebarMenuButton asChild className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                 <SidebarMenuButton asChild className="text-destructive hover:text-destructive hover:bg-destructive/10">
                    <Link href="/login">
                      <LogOut className="h-4 w-4" />
                      <span>Logout</span>
@@ -72,10 +73,13 @@ export default function AdminLayout({
           </SidebarFooter>
         </Sidebar>
 
-        <main className="flex-1 overflow-auto">
-          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-white px-6">
-            <SidebarTrigger />
-            <h1 className="text-lg font-semibold">Dashboard</h1>
+        <main className="flex-1 overflow-auto bg-background">
+          <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b bg-background px-6">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger />
+              <h1 className="text-lg font-semibold">Dashboard</h1>
+            </div>
+            <ThemeToggle />
           </header>
           <div className="p-6">{children}</div>
         </main>

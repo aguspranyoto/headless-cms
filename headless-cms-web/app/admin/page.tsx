@@ -8,7 +8,7 @@ export default function AdminPage() {
       <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Link href="/admin/posts">
-          <Card className="hover:bg-zinc-50 transition-colors">
+          <Card className="hover:bg-muted transition-colors">
             <CardHeader>
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
@@ -20,7 +20,7 @@ export default function AdminPage() {
         </Link>
 
         <Link href="/admin/categories">
-          <Card className="hover:bg-zinc-50 transition-colors">
+          <Card className="hover:bg-muted transition-colors">
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Folder className="h-5 w-5 text-primary" />
@@ -32,7 +32,7 @@ export default function AdminPage() {
         </Link>
 
         <Link href="/admin/users">
-          <Card className="hover:bg-zinc-50 transition-colors">
+          <Card className="hover:bg-muted transition-colors">
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
