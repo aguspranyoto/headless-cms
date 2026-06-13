@@ -2,9 +2,23 @@
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
-import { useCallback, useState } from 'react';
+import ImageExtension from '@tiptap/extension-image';
+import { useCallback, useState, useEffect } from 'react';
 import { MediaManager } from './MediaManager';
+import { Button } from './ui/button';
+import {
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Heading1,
+  Heading2,
+  Heading3,
+  Image as ImageIcon,
+  Quote,
+  Undo,
+  Redo,
+} from 'lucide-react';
 
 interface RichEditorProps {
   content: string;
@@ -15,21 +29,37 @@ export function RichEditor({ content, onChange }: RichEditorProps) {
   const [mediaOpen, setMediaOpen] = useState(false);
 
   const editor = useEditor({
-    extensions: [StarterKit, Image.configure({ inline: false })],
+    extensions: [
+      StarterKit,
+      ImageExtension.configure({
+        allowBase64: true,
+        inline: false,
+      }),
+    ],
     content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
+    editorProps: {
+      attributes: {
+        class:
+          'min-h-[300px] max-h-[500px] overflow-y-auto w-full rounded-b-md bg-background px-4 py-3 text-sm focus-visible:outline-none prose prose-sm max-w-none dark:prose-invert',
+      },
+    },
   });
+
+  // Sync value if updated outside
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
 
   const addImage = useCallback(() => {
     setMediaOpen(true);
   }, [editor]);
 
   if (!editor) return null;
-
-  const getButtonClass = (isActive: boolean) => 
-    `px-2 py-1 rounded text-sm transition-colors ${isActive ? 'bg-secondary text-secondary-foreground' : 'text-foreground hover:bg-secondary/50'}`;
 
   return (
     <>
@@ -41,76 +71,112 @@ export function RichEditor({ content, onChange }: RichEditorProps) {
           setMediaOpen(false);
         }}
       />
-      <div className="border border-input rounded-lg overflow-hidden bg-background">
-        <div className="flex flex-wrap items-center gap-1 px-2 py-1.5 bg-muted/50 border-b border-input">
-          <button
+      <div className="border border-input rounded-md overflow-hidden bg-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+        <div className="flex flex-wrap items-center gap-1 p-1 bg-muted border-b border-border">
+          <Button
             type="button"
+            variant={editor.isActive('bold') ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={getButtonClass(editor.isActive('bold'))}
           >
-            <strong>B</strong>
-          </button>
-          <button
+            <Bold className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('italic') ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={getButtonClass(editor.isActive('italic'))}
           >
-            <em>I</em>
-          </button>
-          <button
+            <Italic className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('heading', { level: 1 }) ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          >
+            <Heading1 className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            variant={editor.isActive('heading', { level: 2 }) ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            className={getButtonClass(editor.isActive('heading', { level: 2 }))}
           >
-            H2
-          </button>
-          <button
+            <Heading2 className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('heading', { level: 3 }) ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            className={getButtonClass(editor.isActive('heading', { level: 3 }))}
           >
-            H3
-          </button>
-          <button
+            <Heading3 className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('bulletList') ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={getButtonClass(editor.isActive('bulletList'))}
           >
-            • List
-          </button>
-          <button
+            <List className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('orderedList') ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={getButtonClass(editor.isActive('orderedList'))}
           >
-            1. List
-          </button>
-          <button
+            <ListOrdered className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant={editor.isActive('blockquote') ? 'secondary' : 'ghost'}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          >
+            <Quote className="w-4 h-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
             onClick={addImage}
-            className={getButtonClass(false)}
           >
-            🖼 Image
-          </button>
-          <button
+            <ImageIcon className="w-4 h-4" />
+          </Button>
+          <div className="flex-1" />
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().undo().run()}
-            className={`${getButtonClass(false)} ml-auto`}
+            disabled={!editor.can().undo()}
           >
-            ↩
-          </button>
-          <button
+            <Undo className="w-4 h-4" />
+          </Button>
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
             onClick={() => editor.chain().focus().redo().run()}
-            className={getButtonClass(false)}
+            disabled={!editor.can().redo()}
           >
-            ↪
-          </button>
+            <Redo className="w-4 h-4" />
+          </Button>
         </div>
-        <EditorContent
-          editor={editor}
-          className="prose prose-sm dark:prose-invert max-w-none p-4 min-h-[300px] focus:outline-none"
-        />
+        <EditorContent editor={editor} />
       </div>
     </>
   );
