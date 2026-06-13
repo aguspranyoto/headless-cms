@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { FileText, Folder, Users, Briefcase } from "lucide-react";
+import { FileText, Folder, Users, Briefcase, Wrench, Award } from "lucide-react";
 
 async function fetchCount(endpoint: string, token?: string) {
   if (!token) return 0;
@@ -34,11 +34,13 @@ export default async function AdminPage() {
     }
   }
 
-  const [postsCount, categoriesCount, usersCount, projectsCount] = await Promise.all([
+  const [postsCount, categoriesCount, usersCount, projectsCount, servicesCount, experiencesCount] = await Promise.all([
     fetchCount('posts', token),
     fetchCount('categories', token),
     role === 'ADMIN' ? fetchCount('users', token) : Promise.resolve(0),
     fetchCount('projects', token),
+    fetchCount('services', token),
+    fetchCount('experiences', token),
   ]);
 
   return (
@@ -71,6 +73,36 @@ export default async function AdminPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{projectsCount}</div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/services">
+          <Card className="hover:bg-muted transition-colors h-full">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Wrench className="h-5 w-5 text-primary" />
+                <CardTitle>Services</CardTitle>
+              </div>
+              <CardDescription>Manage your services</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{servicesCount}</div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/experiences">
+          <Card className="hover:bg-muted transition-colors h-full">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-primary" />
+                <CardTitle>Experiences</CardTitle>
+              </div>
+              <CardDescription>Manage work experiences</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{experiencesCount}</div>
             </CardContent>
           </Card>
         </Link>

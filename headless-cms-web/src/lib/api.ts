@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import type { PaginatedResponse, User, Category, CategoryNode, Post, Project } from '@/types';
+import type { PaginatedResponse, User, Category, CategoryNode, Post, Project, Service, Experience } from '@/types';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
@@ -80,4 +80,32 @@ export const projectsApi = {
     api.patch<Project>(`/projects/${id}`, data).then((r) => r.data),
   delete: (id: string) =>
     api.delete(`/projects/${id}`).then((r) => r.data),
+};
+
+// Services
+export const servicesApi = {
+  list: (params?: Record<string, string | number>) =>
+    api.get<PaginatedResponse<Service>>('/services', { params }).then((r) => r.data),
+  get: (id: string) =>
+    api.get<Service>(`/services/${id}`).then((r) => r.data),
+  create: (data: Record<string, unknown>) =>
+    api.post<Service>('/services', data).then((r) => r.data),
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch<Service>(`/services/${id}`, data).then((r) => r.data),
+  delete: (id: string) =>
+    api.delete(`/services/${id}`).then((r) => r.data),
+};
+
+// Experiences
+export const experiencesApi = {
+  list: (params?: Record<string, string | number>) =>
+    api.get<PaginatedResponse<Experience>>('/experiences', { params }).then((r) => r.data),
+  get: (id: string) =>
+    api.get<Experience>(`/experiences/${id}`).then((r) => r.data),
+  create: (data: Record<string, unknown>) =>
+    api.post<Experience>('/experiences', data).then((r) => r.data),
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch<Experience>(`/experiences/${id}`, data).then((r) => r.data),
+  delete: (id: string) =>
+    api.delete(`/experiences/${id}`).then((r) => r.data),
 };

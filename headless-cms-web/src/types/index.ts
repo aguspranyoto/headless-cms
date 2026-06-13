@@ -68,3 +68,28 @@ export interface Project {
   publishedAt: string | null;
   updatedAt: string;
 }
+
+export interface Service {
+  id: string;
+  title: string;
+  slug: string;
+  desc: string | null;
+  icon: string | null;
+  published: boolean;
+  authorId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Experience {
+  id: string;
+  year: string;
+  role: string;
+  company: string;
+  desc: string | null;
+  stacks: string[] | null;
+  published: boolean;
+  authorId: string;
+  createdAt: string;
+  updatedAt: string;
+}

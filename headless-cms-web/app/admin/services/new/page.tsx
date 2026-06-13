@@ -1,0 +1,160 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCreateService } from '@/hooks/useServices';
+import { useQuery } from '@tanstack/react-query';
+import { usersApi } from '@/lib/api';
+import { toast } from 'sonner';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
+export default function NewServicePage() {
+  const router = useRouter();
+  const createService = useCreateService();
+
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const [desc, setDesc] = useState('');
+  const [icon, setIcon] = useState('');
+  const [published, setPublished] = useState(false);
+  const [authorId, setAuthorId] = useState('');
+
+  const { data: users } = useQuery({
+    queryKey: ['users', 1, 100],
+    queryFn: () => usersApi.list({ page: 1, limit: 100 }),
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createService.mutateAsync({
+        title,
+        slug,
+        desc: desc || undefined,
+        icon: icon || undefined,
+        published,
+        authorId,
+      });
+      toast.success('Service created!');
+      router.push('/admin/services');
+    } catch {
+      toast.error('Failed to create Service');
+    }
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto py-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Create New Service</h1>
+        <Button variant="outline" onClick={() => router.push('/admin/services')}>
+          Cancel
+        </Button>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
+            <Card>
+              <CardContent className="pt-6 space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                      if (!slug) setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+                    }}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="desc">Description</Label>
+                  <textarea
+                    id="desc"
+                    value={desc}
+                    onChange={(e) => setDesc(e.target.value)}
+                    className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="icon">Icon (Lucide name)</Label>
+                  <Input
+                    id="icon"
+                    value={icon}
+                    onChange={(e) => setIcon(e.target.value)}
+                    placeholder="e.g. Activity"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Publishing</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="published"
+                    checked={published}
+                    onChange={(e) => setPublished(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300"
+                  />
+                  <Label htmlFor="published">Publish immediately</Label>
+                </div>
+                <Button type="submit" className="w-full" disabled={createService.isPending}>
+                  {createService.isPending ? 'Saving...' : 'Save Service'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Metadata</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="slug">Slug</Label>
+                  <Input
+                    id="slug"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    required
+                    className="font-mono text-sm"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="author">Author</Label>
+                  <select
+                    id="author"
+                    value={authorId}
+                    onChange={(e) => setAuthorId(e.target.value)}
+                    className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    required
+                  >
+                    <option value="">Select author...</option>
+                    {users?.data?.map((u) => (
+                      <option key={u.id} value={u.id}>
+                        {u.username}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}
