@@ -16,6 +16,8 @@ type User = typeof users.$inferSelect;
 
 const ALLOWED_SORT_FIELDS = new Set(['createdAt', 'updatedAt', 'email', 'username', 'displayName']);
 
+import * as bcrypt from 'bcryptjs';
+
 function sanitizeUser(user: User) {
   const { passwordHash, ...safe } = user;
   return safe;
@@ -48,12 +50,14 @@ export class UsersService {
       throw new ConflictException('Username already exists');
     }
 
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
     const [created] = await this.db
       .insert(users)
       .values({
         email: dto.email,
         username: dto.username,
-        passwordHash: dto.password,
+        passwordHash: hashedPassword,
         displayName: dto.displayName ?? null,
         avatarUrl: dto.avatarUrl ?? null,
         isActive: dto.isActive ?? true,

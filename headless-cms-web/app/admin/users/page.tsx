@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { usersApi } from '@/lib/api';
 import { DataTable } from '@/components/DataTable';
@@ -54,6 +55,12 @@ export default function UsersPage() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Users</h1>
+        <Link
+          href="/admin/users/new"
+          className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+        >
+          + Add User
+        </Link>
       </div>
       <div className="bg-white rounded-lg shadow">
         <DataTable<User>

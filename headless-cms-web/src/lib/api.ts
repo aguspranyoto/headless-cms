@@ -6,6 +6,15 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+export const authApi = {
+  login: (data: Record<string, string>) =>
+    api.post('/auth/login', data).then((r) => r.data),
+  register: (data: Record<string, string>) =>
+    api.post('/auth/register', data).then((r) => r.data),
+  verifyEmail: (token: string) =>
+    api.get(`/auth/verify-email?token=${token}`).then((r) => r.data),
+};
+
 // Users
 export const usersApi = {
   list: (params?: Record<string, string | number>) =>

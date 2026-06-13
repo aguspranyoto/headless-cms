@@ -8,6 +8,7 @@ export const users = pgTable('headless_cms_users', {
   displayName: varchar('display_name', { length: 128 }),
   avatarUrl: varchar('avatar_url', { length: 512 }),
   isActive: boolean('is_active').default(true).notNull(),
+  emailVerified: boolean('email_verified').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
