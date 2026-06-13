@@ -80,6 +80,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         username: user.username,
+        role: user.role,
       }
     };
   }
@@ -117,7 +118,7 @@ export class AuthService {
       .where(eq(users.id, verificationToken.userId))
       .limit(1);
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -126,6 +127,7 @@ export class AuthService {
         email: user.email,
         username: user.username,
         displayName: user.displayName,
+        role: user.role,
       }
     };
   }
@@ -153,7 +155,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -162,6 +164,7 @@ export class AuthService {
         email: user.email,
         username: user.username,
         displayName: user.displayName,
+        role: user.role,
       }
     };
   }
@@ -193,7 +196,7 @@ export class AuthService {
       }) as any;
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -202,6 +205,7 @@ export class AuthService {
         email: user.email,
         username: user.username,
         displayName: user.displayName,
+        role: user.role,
       }
     };
   }

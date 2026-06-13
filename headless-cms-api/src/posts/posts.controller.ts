@@ -7,7 +7,9 @@ import {
   Body,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PostsService } from './posts.service';
 import { CreatePostSchema } from './dto/create-post.dto';
 import { UpdatePostSchema } from './dto/update-post.dto';
@@ -15,8 +17,9 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { QuerySchema } from '../common/dto/query.dto';
 
 @Controller('posts')
+@UseGuards(JwtAuthGuard)
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postsService: PostsService) { }
 
   @Post()
   async create(

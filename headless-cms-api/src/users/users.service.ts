@@ -52,6 +52,9 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
+    const adminEmails = (process.env.ADMIN_EMAIL || '').split(',').map(e => e.trim());
+    const isAutoAdmin = adminEmails.includes(dto.email);
+
     const [created] = await this.db
       .insert(users)
       .values({
@@ -61,6 +64,7 @@ export class UsersService {
         displayName: dto.displayName ?? null,
         avatarUrl: dto.avatarUrl ?? null,
         isActive: dto.isActive ?? true,
+        role: isAutoAdmin ? 'ADMIN' : 'USER',
       })
       .returning();
 

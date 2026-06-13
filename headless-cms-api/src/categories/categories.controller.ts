@@ -7,7 +7,9 @@ import {
   Body,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CategoriesService } from './categories.service';
 import { CreateCategorySchema } from './dto/create-category.dto';
 import { UpdateCategorySchema } from './dto/update-category.dto';
@@ -15,8 +17,9 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { QuerySchema } from '../common/dto/query.dto';
 
 @Controller('categories')
+@UseGuards(JwtAuthGuard)
 export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+  constructor(private readonly categoriesService: CategoriesService) { }
 
   @Post()
   async create(

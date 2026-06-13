@@ -7,7 +7,11 @@ import {
   Body,
   Param,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { UsersService } from './users.service';
 import { CreateUserSchema } from './dto/create-user.dto';
 import { UpdateUserSchema } from './dto/update-user.dto';
@@ -15,6 +19,8 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { QuerySchema } from '../common/dto/query.dto';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('ADMIN')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

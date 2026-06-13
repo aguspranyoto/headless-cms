@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { FileText, Folder, Users, LayoutDashboard, LogOut } from "lucide-react";
 import {
   Sidebar,
@@ -28,11 +29,30 @@ const items = [
   { title: "Users", url: "/admin/users", icon: Users },
 ];
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('auth_token')?.value;
+  let role = 'USER';
+  
+  if (token) {
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const payloadJson = Buffer.from(payloadBase64, 'base64').toString();
+      const payload = JSON.parse(payloadJson);
+      role = payload.role || 'USER';
+    } catch (e) {
+      console.error('Failed to parse token in layout', e);
+    }
+  }
+
+  const filteredItems = items.filter(
+    (item) => item.title !== "Users" || role === 'ADMIN'
+  );
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background">
@@ -45,7 +65,7 @@ export default function AdminLayout({
               <SidebarGroupLabel>Menu</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {items.map((item) => (
+                  {filteredItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
                         <Link href={item.url}>
