@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { FileText, Folder, Users, LayoutDashboard, LogOut } from "lucide-react";
+import { FileText, Folder, Users, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,9 +14,9 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-  SidebarFooter
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UserNav } from "@/components/UserNav";
 
 export const metadata: Metadata = {
   title: "Admin - Headless CMS",
@@ -37,6 +37,7 @@ export default async function AdminLayout({
   const cookieStore = await cookies();
   const token = cookieStore.get('auth_token')?.value;
   let role = 'USER';
+  let email = '';
   
   if (token) {
     try {
@@ -44,6 +45,7 @@ export default async function AdminLayout({
       const payloadJson = Buffer.from(payloadBase64, 'base64').toString();
       const payload = JSON.parse(payloadJson);
       role = payload.role || 'USER';
+      email = payload.email || '';
     } catch (e) {
       console.error('Failed to parse token in layout', e);
     }
@@ -79,18 +81,6 @@ export default async function AdminLayout({
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="border-t p-4">
-             <SidebarMenu>
-               <SidebarMenuItem>
-                 <SidebarMenuButton asChild className="text-destructive hover:text-destructive hover:bg-destructive/10">
-                   <Link href="/login">
-                     <LogOut className="h-4 w-4" />
-                     <span>Logout</span>
-                   </Link>
-                 </SidebarMenuButton>
-               </SidebarMenuItem>
-             </SidebarMenu>
-          </SidebarFooter>
         </Sidebar>
 
         <main className="flex-1 overflow-auto bg-background">
@@ -99,7 +89,10 @@ export default async function AdminLayout({
               <SidebarTrigger />
               <h1 className="text-lg font-semibold">Dashboard</h1>
             </div>
-            <ThemeToggle />
+            <div className="flex items-center gap-2">
+              <UserNav email={email} />
+              <ThemeToggle />
+            </div>
           </header>
           <div className="p-6">{children}</div>
         </main>

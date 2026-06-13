@@ -118,7 +118,7 @@ export class AuthService {
       .where(eq(users.id, verificationToken.userId))
       .limit(1);
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role, isActive: user.isActive };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -155,7 +155,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role, isActive: user.isActive };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
@@ -196,7 +196,7 @@ export class AuthService {
       }) as any;
     }
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { sub: user.id, email: user.email, role: user.role, isActive: user.isActive };
     
     return {
       access_token: await this.jwtService.signAsync(payload),
