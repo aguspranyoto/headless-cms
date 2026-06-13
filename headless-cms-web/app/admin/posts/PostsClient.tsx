@@ -64,7 +64,7 @@ export function PostsClient({
           </Link>
         </Button>
       </div>
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<Post>
           data={data?.data ?? []}
           columns={columns}

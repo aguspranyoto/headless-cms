@@ -56,7 +56,7 @@ export default function CategoriesPage() {
           </Link>
         </Button>
       </div>
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<Category>
           data={data?.data ?? []}
           columns={columns}

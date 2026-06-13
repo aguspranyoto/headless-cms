@@ -81,7 +81,7 @@ export default function UsersPage() {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Users</h1>
       </div>
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<User>
           data={data?.data ?? []}
           columns={columns}

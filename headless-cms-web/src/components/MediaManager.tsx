@@ -58,7 +58,7 @@ export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[80vh] flex flex-col">
+      <div className="bg-card rounded-lg w-full max-w-2xl max-h-[80vh] flex flex-col border">
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-lg font-semibold">Media Manager</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
@@ -104,7 +104,7 @@ export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
                       e.stopPropagation();
                       onSelect(item.url);
                     }}
-                    className="hidden group-hover:block px-2 py-1 bg-white rounded text-xs"
+                    className="hidden group-hover:block px-2 py-1 bg-background text-foreground rounded text-xs border"
                   >
                     Select
                   </button>

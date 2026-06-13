@@ -64,7 +64,7 @@ export function ProjectsClient({
           </Link>
         </Button>
       </div>
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<Project>
           data={data?.data ?? []}
           columns={columns}
