@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import type { PaginatedResponse, User, Category, CategoryNode, Post } from '@/types';
+import type { PaginatedResponse, User, Category, CategoryNode, Post, Project } from '@/types';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
@@ -66,4 +66,18 @@ export const postsApi = {
     api.patch<Post>(`/posts/${id}`, data).then((r) => r.data),
   delete: (id: string) =>
     api.delete(`/posts/${id}`).then((r) => r.data),
+};
+
+// Projects
+export const projectsApi = {
+  list: (params?: Record<string, string | number>) =>
+    api.get<PaginatedResponse<Project>>('/projects', { params }).then((r) => r.data),
+  get: (id: string) =>
+    api.get<Project>(`/projects/${id}`).then((r) => r.data),
+  create: (data: Record<string, unknown>) =>
+    api.post<Project>('/projects', data).then((r) => r.data),
+  update: (id: string, data: Record<string, unknown>) =>
+    api.patch<Project>(`/projects/${id}`, data).then((r) => r.data),
+  delete: (id: string) =>
+    api.delete(`/projects/${id}`).then((r) => r.data),
 };

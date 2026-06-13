@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { FileText, Folder, Users, LayoutDashboard } from "lucide-react";
+import { FileText, Folder, Users, LayoutDashboard, Briefcase } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 const items = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
   { title: "Posts", url: "/admin/posts", icon: FileText },
+  { title: "Projects", url: "/admin/projects", icon: Briefcase },
   { title: "Categories", url: "/admin/categories", icon: Folder },
   { title: "Users", url: "/admin/users", icon: Users },
 ];

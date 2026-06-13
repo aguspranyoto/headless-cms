@@ -2,9 +2,11 @@ import { relations } from 'drizzle-orm';
 import { users } from './users.schema';
 import { posts } from './posts.schema';
 import { categories } from './categories.schema';
+import { projects } from './projects.schema';
 
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
+  projects: many(projects),
 }));
 
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
@@ -14,6 +16,7 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   }),
   children: many(categories),
   posts: many(posts),
+  projects: many(projects),
 }));
 
 export const postsRelations = relations(posts, ({ one }) => ({
@@ -23,6 +26,17 @@ export const postsRelations = relations(posts, ({ one }) => ({
   }),
   category: one(categories, {
     fields: [posts.categoryId],
+    references: [categories.id],
+  }),
+}));
+
+export const projectsRelations = relations(projects, ({ one }) => ({
+  author: one(users, {
+    fields: [projects.authorId],
+    references: [users.id],
+  }),
+  category: one(categories, {
+    fields: [projects.categoryId],
     references: [categories.id],
   }),
 }));

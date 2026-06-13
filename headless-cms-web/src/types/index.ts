@@ -50,3 +50,21 @@ export interface Post {
   publishedAt: string | null;
   updatedAt: string;
 }
+
+export interface Project {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  coverImage: string | null;
+  githubUrl: string | null;
+  demoUrl: string | null;
+  technologies: string | null;
+  published: boolean;
+  authorId: string;
+  categoryId: string | null;
+  createdAt: string;
+  publishedAt: string | null;
+  updatedAt: string;
+}

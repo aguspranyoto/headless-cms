@@ -15,6 +15,13 @@
       "when": 1781313156131,
       "tag": "0001_lowly_shockwave",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781340819874,
+      "tag": "0002_gray_jean_grey",
+      "breakpoints": true
     }
   ]
 }

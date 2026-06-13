@@ -8,6 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { PostsModule } from './posts/posts.module';
 import { MediaModule } from './media/media.module';
 import { AuthModule } from './auth/auth.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { AuthModule } from './auth/auth.module';
     CategoriesModule, 
     PostsModule, 
     MediaModule, 
-    AuthModule
+    AuthModule, ProjectsModule
   ],
   controllers: [AppController],
   providers: [AppService],
