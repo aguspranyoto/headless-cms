@@ -24,34 +24,44 @@
 ## Implementation Phases
 
 ### Phase 1: Backend Foundation (NestJS + Drizzle)
-- [ ] Install Drizzle ORM and Postgres drivers in `headless-cms-api`.
-- [ ] Configure `drizzle.config.ts` to connect to the self-hosted Supabase instance.
-- [ ] Set up the `DatabaseModule` in NestJS to inject the Drizzle connection.
-- [ ] Define the initial database schema (e.g., `users`, `posts`, `categories`). **CRITICAL: All database tables MUST use the `headless_cms_` prefix.**
-- [ ] Generate and push the first database migration.
+- [x] Install Drizzle ORM and Postgres drivers in `headless-cms-api`.
+- [x] Configure `drizzle.config.ts` to connect to the self-hosted Supabase instance.
+- [x] Set up the `DatabaseModule` in NestJS to inject the Drizzle connection.
+- [x] Define the initial database schema (`headless_cms_users`, `headless_cms_posts`, `headless_cms_categories`). **CRITICAL: All database tables MUST use the `headless_cms_` prefix.**
+- [x] Generate and push the first database migration.
+
+**Phase 1 Milestones:**
+- [x] **M1** — Scaffold + DB connection + Drizzle provider + schema + migration
+- [x] **M2** — Users CRUD service + Zod validation + pagination
+- [ ] **M3** — Categories CRUD service + seed script
+- [ ] **M4** — Posts CRUD service + seed script
+- [x] **M5** — Zod validation + error interceptor + pagination utility
+- [x] **M6** — Integration tests (17/17 passing)
 
 ### Phase 2: Core API Development
-- [ ] Create generic CRUD repositories/services using Drizzle.
-- [ ] Implement pagination, sorting, and filtering logic at the API level (to be consumed by TanStack Table).
-- [ ] Build controllers for the initial entities.
+- [x] Create generic CRUD repositories/services using Drizzle.
+- [x] Implement pagination, sorting, and filtering logic at the API level (to be consumed by TanStack Table).
+- [x] Build controllers for the initial entities.
 - [ ] (Optional) Set up Supabase Auth verification in NestJS Guards.
 
 ### Phase 3: Frontend Foundation (Next.js + TanStack)
-- [ ] Install frontend libraries: TanStack (Query/Table), Zustand, React Hook Form, and Zod in `headless-cms-web`.
-- [ ] Set up the `QueryClientProvider` in the Next.js root layout.
-- [ ] Create an API service layer (e.g., using `axios` or native `fetch`) to communicate with the NestJS backend.
-- [ ] Build a generic, reusable TanStack Table component that supports server-side pagination and sorting.
+- [x] Install frontend libraries: TanStack (Query/Table), Zustand, React Hook Form, and Zod in `headless-cms-web`.
+- [x] Set up the `QueryClientProvider` in the Next.js root layout.
+- [x] Create an API service layer (e.g., using `axios` or native `fetch`) to communicate with the NestJS backend.
+- [x] Build a generic, reusable TanStack Table component that supports server-side pagination and sorting.
 
 ### Phase 4: CMS Dashboard Integration
-- [ ] Build the layout for the admin dashboard (Sidebar, Header).
-- [ ] Implement the "Posts/Content" list view using the generic TanStack Table.
-- [ ] Implement Server Component hydration: Fetch the first page of data on the server and pass it to TanStack Query for seamless initial load.
-- [ ] Create mutation hooks (TanStack Query) for creating, updating, and deleting content.
-- [ ] Integrate Tiptap Rich Text Editor for content creation, including image uploads to Cloudflare R2.
+- [x] Build the layout for the admin dashboard (Sidebar, Header).
+- [x] Implement the "Posts/Content" list view using the generic TanStack Table.
+- [x] Implement Server Component hydration: Fetch the first page of data on the server and pass it to TanStack Query for seamless initial load.
+- [x] Create mutation hooks (TanStack Query) for creating, updating, and deleting content.
+- [x] Integrate Tiptap Rich Text Editor for content creation, including image uploads to Cloudflare R2.
+
+**Post Create/Edit page** — `/admin/posts/new` and `/admin/posts/[id]/edit` ✅
 
 ### Phase 5: Polish & Advanced Features
-- [ ] Build a centralized Media Manager modal to handle browsing, choosing, and uploading images to Cloudflare R2.
-- [ ] Refine loading states, error handling, and toast notifications.
+- [x] Build a centralized Media Manager modal to handle browsing, choosing, and uploading images to Cloudflare R2.
+- [x] Refine loading states, error handling, and toast notifications.
 - [ ] Finalize role-based access control (RBAC).
 
 ### Phase 6: Future Enhancements
