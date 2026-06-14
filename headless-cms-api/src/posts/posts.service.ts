@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/postgres-js';
-import { eq, like, desc, asc, or, SQL } from 'drizzle-orm';
+import { eq, like, desc, asc, or, SQL, count } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER } from '../common/database/drizzle.provider';
 import { posts } from '../common/database/schema';
 import type { CreatePostDto } from './dto/create-post.dto';
@@ -75,12 +75,10 @@ export class PostsService {
       .offset(offset)
       .orderBy(orderBy);
 
-    const countResult = await this.db
-      .select({ count: posts.id })
+    const [{ total }] = await this.db
+      .select({ total: count() })
       .from(posts)
       .where(where as any);
-
-    const total = countResult.length;
 
     return {
       data: items,

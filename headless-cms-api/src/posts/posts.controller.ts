@@ -17,11 +17,11 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { QuerySchema } from '../common/dto/query.dto';
 
 @Controller('posts')
-@UseGuards(JwtAuthGuard)
 export class PostsController {
   constructor(private readonly postsService: PostsService) { }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(
     @Body(new ZodValidationPipe(CreatePostSchema)) body: any,
   ) {
@@ -41,6 +41,7 @@ export class PostsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdatePostSchema)) body: any,
@@ -49,6 +50,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }

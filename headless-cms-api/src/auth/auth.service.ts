@@ -149,7 +149,7 @@ export class AuthService {
       throw new UnauthorizedException('Please verify your email before logging in');
     }
 
-    const isPasswordValid = bcrypt.compareSync(password, user.passwordHash) || password === user.passwordHash;
+    const isPasswordValid = bcrypt.compareSync(password, user.passwordHash);
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');

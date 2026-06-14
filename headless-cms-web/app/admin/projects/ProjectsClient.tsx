@@ -36,6 +36,17 @@ const columns: ColumnDef<Project>[] = [
     header: 'Created',
     cell: (info) => new Date(info.getValue() as string).toLocaleDateString(),
   },
+  {
+    id: 'actions',
+    header: '',
+    cell: (info) => (
+      <div className="flex justify-end">
+        <Link href={`/admin/projects/${info.row.original.id}/edit`} className="text-primary hover:underline text-sm">
+          Edit
+        </Link>
+      </div>
+    ),
+  },
 ];
 
 export function ProjectsClient({

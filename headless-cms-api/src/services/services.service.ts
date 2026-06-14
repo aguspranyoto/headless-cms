@@ -5,7 +5,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/postgres-js';
-import { eq, like, desc, asc, or, SQL } from 'drizzle-orm';
+import { eq, like, desc, asc, or, SQL, count } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER } from '../common/database/drizzle.provider';
 import { services } from '../common/database/schema';
 import type { CreateServiceDto } from './dto/create-service.dto';
@@ -73,12 +73,10 @@ export class ServicesService {
       .offset(offset)
       .orderBy(orderBy);
 
-    const countResult = await this.db
-      .select({ count: services.id })
+    const [{ total }] = await this.db
+      .select({ total: count() })
       .from(services)
       .where(where as any);
-
-    const total = countResult.length;
 
     return {
       data: items,

@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { MediaManager } from './MediaManager';
 import { Button } from './ui/button';
 import {
@@ -28,6 +28,8 @@ interface RichEditorProps {
 export function RichEditor({ content, onChange }: RichEditorProps) {
   const [mediaOpen, setMediaOpen] = useState(false);
 
+  const isInternalUpdate = useRef(false);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -38,6 +40,7 @@ export function RichEditor({ content, onChange }: RichEditorProps) {
     ],
     content,
     onUpdate: ({ editor }) => {
+      isInternalUpdate.current = true;
       onChange(editor.getHTML());
     },
     editorProps: {
@@ -50,9 +53,10 @@ export function RichEditor({ content, onChange }: RichEditorProps) {
 
   // Sync value if updated outside
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
+    if (editor && !isInternalUpdate.current && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
+    isInternalUpdate.current = false;
   }, [content, editor]);
 
   const addImage = useCallback(() => {
