@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./headless-cms-api
+      dockerfile: Dockerfile
+    container_name: headless_cms_api
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./headless-cms-api/.env
+    restart: unless-stopped
+    networks:
+      - cms_network
+
+  web:
+    build:
+      context: ./headless-cms-web
+      dockerfile: Dockerfile
+    container_name: headless_cms_web
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./headless-cms-web/.env
+      - ./headless-cms-api/.env
+    environment:
+      # Optional overrides, web uses the same .env as API currently
+      - PORT=3001
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - cms_network
+
+networks:
+  cms_network:
+    driver: bridge
