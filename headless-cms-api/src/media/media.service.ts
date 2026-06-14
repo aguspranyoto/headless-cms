@@ -4,6 +4,7 @@ import {
   PutObjectCommand,
   ListObjectsV2Command,
   DeleteObjectCommand,
+  GetObjectCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -11,7 +12,9 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 export class MediaService {
   private s3: S3Client;
   private bucket: string;
-  private publicUrlBase: string;
+  get publicUrlBase() {
+    return process.env.R2_PUBLIC_URL || `https://${this.bucket}.${process.env.R2_ACCOUNT_ID}.r2.dev`;
+  }
 
   constructor() {
     this.s3 = new S3Client({
@@ -23,7 +26,6 @@ export class MediaService {
       },
     });
     this.bucket = process.env.R2_BUCKET_NAME || 'headless-cms';
-    this.publicUrlBase = `https://${this.bucket}.${process.env.R2_ACCOUNT_ID}.r2.dev`;
   }
 
   async upload(
@@ -65,5 +67,17 @@ export class MediaService {
     await this.s3.send(
       new DeleteObjectCommand({ Bucket: this.bucket, Key: key }),
     );
+  }
+
+  async getFileStream(key: string) {
+    const command = new GetObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+    });
+    const response = await this.s3.send(command);
+    return {
+      stream: response.Body,
+      contentType: response.ContentType,
+    };
   }
 }

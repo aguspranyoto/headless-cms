@@ -39,7 +39,7 @@ export class AuthController {
     const result = await this.authService.googleLogin(req);
     
     // Redirect to frontend with token
-    const frontendUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const frontendUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001';
     res.redirect(`${frontendUrl}/auth/callback?token=${result.access_token}`);
   }
 }

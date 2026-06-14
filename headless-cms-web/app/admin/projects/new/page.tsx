@@ -6,6 +6,7 @@ import { useCreateProject } from '@/hooks/useProjects';
 import { useQuery } from '@tanstack/react-query';
 import { usersApi, categoriesApi } from '@/lib/api';
 import { RichEditor } from '@/components/RichEditor';
+import { MediaManager } from '@/components/MediaManager';
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,6 +24,11 @@ export default function NewProjectPage() {
   const [published, setPublished] = useState(false);
   const [authorId, setAuthorId] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
+  const [demoUrl, setDemoUrl] = useState('');
+  const [technologies, setTechnologies] = useState('');
+  const [mediaOpen, setMediaOpen] = useState(false);
 
   const { data: users } = useQuery({
     queryKey: ['users', 1, 100],
@@ -45,6 +51,10 @@ export default function NewProjectPage() {
         published,
         authorId,
         categoryId: categoryId || undefined,
+        coverImage: coverImage || undefined,
+        githubUrl: githubUrl || undefined,
+        demoUrl: demoUrl || undefined,
+        technologies: technologies || undefined,
       });
       toast.success('Project created!');
       router.push('/admin/projects');
@@ -92,6 +102,70 @@ export default function NewProjectPage() {
                     value={excerpt}
                     onChange={(e) => setExcerpt(e.target.value)}
                     className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Project Details & Assets</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Cover Image</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Image URL"
+                      value={coverImage}
+                      onChange={(e) => setCoverImage(e.target.value)}
+                    />
+                    <Button type="button" variant="secondary" onClick={() => setMediaOpen(true)}>
+                      Upload / Select
+                    </Button>
+                  </div>
+                  {coverImage && (
+                    <div className="relative w-40 h-24 border rounded overflow-hidden mt-2">
+                      <img src={coverImage} alt="Preview" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setCoverImage('')}
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs leading-none w-5 h-5 flex items-center justify-center hover:bg-red-700"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="githubUrl">GitHub URL</Label>
+                    <Input
+                      id="githubUrl"
+                      placeholder="https://github.com/..."
+                      value={githubUrl}
+                      onChange={(e) => setGithubUrl(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="demoUrl">Demo URL</Label>
+                    <Input
+                      id="demoUrl"
+                      placeholder="https://..."
+                      value={demoUrl}
+                      onChange={(e) => setDemoUrl(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="technologies">Technologies (comma separated)</Label>
+                  <Input
+                    id="technologies"
+                    placeholder="React, Next.js, Tailwind CSS"
+                    value={technologies}
+                    onChange={(e) => setTechnologies(e.target.value)}
                   />
                 </div>
               </CardContent>
@@ -175,6 +249,15 @@ export default function NewProjectPage() {
           </div>
         </div>
       </form>
+
+      <MediaManager
+        open={mediaOpen}
+        onClose={() => setMediaOpen(false)}
+        onSelect={(url) => {
+          setCoverImage(url);
+          setMediaOpen(false);
+        }}
+      />
     </div>
   );
 }

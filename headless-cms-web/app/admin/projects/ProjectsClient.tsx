@@ -11,6 +11,18 @@ import type { Project } from '@/types';
 
 const columns: ColumnDef<Project>[] = [
   {
+    accessorKey: 'coverImage',
+    header: 'Cover',
+    cell: (info) => {
+      const url = info.getValue() as string;
+      return url ? (
+        <img src={url} alt="Cover" className="w-16 h-10 object-cover rounded border" />
+      ) : (
+        <div className="w-16 h-10 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-400">None</div>
+      );
+    },
+  },
+  {
     accessorKey: 'title',
     header: 'Title',
     cell: (info) => (

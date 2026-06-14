@@ -6,6 +6,7 @@ import { useUpdateProject, useDeleteProject } from '@/hooks/useProjects';
 import { useQuery } from '@tanstack/react-query';
 import { projectsApi, usersApi, categoriesApi } from '@/lib/api';
 import { RichEditor } from '@/components/RichEditor';
+import { MediaManager } from '@/components/MediaManager';
 import { toast } from 'sonner';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,11 @@ export default function EditProjectPage() {
   const [excerpt, setExcerpt] = useState('');
   const [published, setPublished] = useState(false);
   const [categoryId, setCategoryId] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
+  const [demoUrl, setDemoUrl] = useState('');
+  const [technologies, setTechnologies] = useState('');
+  const [mediaOpen, setMediaOpen] = useState(false);
 
   const { data: project, isLoading } = useQuery({
     queryKey: ['project', id],
@@ -44,6 +50,10 @@ export default function EditProjectPage() {
       setExcerpt(project.excerpt ?? '');
       setPublished(project.published);
       setCategoryId(project.categoryId ?? '');
+      setCoverImage(project.coverImage ?? '');
+      setGithubUrl(project.githubUrl ?? '');
+      setDemoUrl(project.demoUrl ?? '');
+      setTechnologies(project.technologies ?? '');
     }
   }, [project]);
 
@@ -59,6 +69,10 @@ export default function EditProjectPage() {
           excerpt: excerpt || undefined,
           published,
           categoryId: categoryId || undefined,
+          coverImage: coverImage || undefined,
+          githubUrl: githubUrl || undefined,
+          demoUrl: demoUrl || undefined,
+          technologies: technologies || undefined,
         },
       });
       toast.success('Project updated!');
@@ -127,6 +141,70 @@ export default function EditProjectPage() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Project Details & Assets</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Cover Image</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Image URL"
+                      value={coverImage}
+                      onChange={(e) => setCoverImage(e.target.value)}
+                    />
+                    <Button type="button" variant="secondary" onClick={() => setMediaOpen(true)}>
+                      Upload / Select
+                    </Button>
+                  </div>
+                  {coverImage && (
+                    <div className="relative w-40 h-24 border rounded overflow-hidden mt-2">
+                      <img src={coverImage} alt="Preview" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => setCoverImage('')}
+                        className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs leading-none w-5 h-5 flex items-center justify-center hover:bg-red-700"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="githubUrl">GitHub URL</Label>
+                    <Input
+                      id="githubUrl"
+                      placeholder="https://github.com/..."
+                      value={githubUrl}
+                      onChange={(e) => setGithubUrl(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="demoUrl">Demo URL</Label>
+                    <Input
+                      id="demoUrl"
+                      placeholder="https://..."
+                      value={demoUrl}
+                      onChange={(e) => setDemoUrl(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="technologies">Technologies (comma separated)</Label>
+                  <Input
+                    id="technologies"
+                    placeholder="React, Next.js, Tailwind CSS"
+                    value={technologies}
+                    onChange={(e) => setTechnologies(e.target.value)}
+                  />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="space-y-6">
@@ -188,6 +266,15 @@ export default function EditProjectPage() {
           </div>
         </div>
       </form>
+
+      <MediaManager
+        open={mediaOpen}
+        onClose={() => setMediaOpen(false)}
+        onSelect={(url) => {
+          setCoverImage(url);
+          setMediaOpen(false);
+        }}
+      />
     </div>
   );
 }

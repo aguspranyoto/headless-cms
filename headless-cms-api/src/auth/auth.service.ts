@@ -53,7 +53,7 @@ export class AuthService {
     });
 
     // Send email via Resend
-    const frontendUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const frontendUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001';
     const verifyUrl = `${frontendUrl}/verify-email?token=${token}`;
 
     try {
