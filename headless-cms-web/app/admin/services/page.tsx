@@ -1,7 +1,7 @@
 import { ServicesClient } from './ServicesClient';
 
 export default async function ServicesPage() {
-  let initialData = null;
+  let initialData = undefined;
 
   try {
     const res = await fetch(

@@ -1,7 +1,7 @@
 import { PostsClient } from './PostsClient';
 
 export default async function PostsPage() {
-  let initialData = null;
+  let initialData = undefined;
 
   try {
     const res = await fetch(

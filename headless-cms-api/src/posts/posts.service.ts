@@ -87,10 +87,11 @@ export class PostsService {
   }
 
   async findOne(id: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     const [post] = await this.db
       .select()
       .from(posts)
-      .where(eq(posts.id, id))
+      .where(isUuid ? eq(posts.id, id) : eq(posts.slug, id))
       .limit(1);
 
     if (!post) {

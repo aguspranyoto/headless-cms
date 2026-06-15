@@ -91,10 +91,11 @@ export class ProjectsService {
   }
 
   async findOne(id: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     const [project] = await this.db
       .select()
       .from(projects)
-      .where(eq(projects.id, id))
+      .where(isUuid ? eq(projects.id, id) : eq(projects.slug, id))
       .limit(1);
 
     if (!project) {

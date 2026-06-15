@@ -85,10 +85,11 @@ export class ServicesService {
   }
 
   async findOne(id: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
     const [service] = await this.db
       .select()
       .from(services)
-      .where(eq(services.id, id))
+      .where(isUuid ? eq(services.id, id) : eq(services.slug, id))
       .limit(1);
 
     if (!service) {

@@ -1,7 +1,7 @@
 import { ProjectsClient } from './ProjectsClient';
 
 export default async function ProjectsPage() {
-  let initialData = null;
+  let initialData = undefined;
 
   try {
     const res = await fetch(

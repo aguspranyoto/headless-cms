@@ -1,7 +1,7 @@
 import { ExperiencesClient } from './ExperiencesClient';
 
 export default async function ExperiencesPage() {
-  let initialData = null;
+  let initialData = undefined;
 
   try {
     const res = await fetch(
