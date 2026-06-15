@@ -6,7 +6,8 @@ import { FileText, Folder, Users, Briefcase, Wrench, Award } from "lucide-react"
 async function fetchCount(endpoint: string, token?: string) {
   if (!token) return 0;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/${endpoint}?page=1&limit=1`, {
+    const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+    const res = await fetch(`${apiUrl}/${endpoint}?page=1&limit=1`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: 'no-store'
     });
