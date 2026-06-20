@@ -10,6 +10,8 @@ interface MediaManagerProps {
   onSelect: (url: string) => void;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
 export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
   const qc = useQueryClient();
   const [uploading, setUploading] = useState(false);
@@ -18,7 +20,7 @@ export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
     queryKey: ['media'],
     queryFn: () =>
       axios
-        .get('http://localhost:4000/media', { params: { folder: 'uploads' } })
+        .get(`${API_URL}/media`, { params: { folder: 'uploads' } })
         .then((r) => r.data),
     enabled: open,
   });
@@ -28,7 +30,7 @@ export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
       const form = new FormData();
       form.append('file', file);
       const res = await axios.post(
-        'http://localhost:4000/media/upload?folder=uploads',
+        `${API_URL}/media/upload?folder=uploads`,
         form,
       );
       return res.data;
@@ -38,7 +40,7 @@ export function MediaManager({ open, onClose, onSelect }: MediaManagerProps) {
 
   const deleteMutation = useMutation({
     mutationFn: async (key: string) => {
-      await axios.delete(`http://localhost:4000/media/${encodeURIComponent(key)}`);
+      await axios.delete(`${API_URL}/media/${encodeURIComponent(key)}`);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['media'] }),
   });
