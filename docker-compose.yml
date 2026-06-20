@@ -18,16 +18,17 @@ services:
     build:
       context: ./headless-cms-web
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://headless-cms-api.agusp.com}
     container_name: headless_cms_web
     ports:
-      - "3001:3001"
+      - "3005:3001"
     env_file:
       - ./headless-cms-web/.env
       - ./headless-cms-api/.env
     environment:
-      # Optional overrides, web uses the same .env as API currently
       - PORT=3001
-      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_API_URL=https://headless-cms-api.agusp.com
       - API_URL=http://api:4000
     depends_on:
       - api
