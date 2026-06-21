@@ -25,6 +25,7 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
+    throw new UnauthorizedException('Registration is currently closed.');
     // Check if email already exists
     const existingUser = await this.db
       .select()
@@ -184,16 +185,7 @@ export class AuthService {
       .limit(1);
 
     if (!user) {
-      // Create user if not exists
-      const username = email.split('@')[0] + Math.floor(Math.random() * 1000);
-      user = await this.usersService.create({
-        email,
-        username,
-        password: Math.random().toString(36).slice(-8), // Random password
-        displayName: `${firstName} ${lastName}`,
-        avatarUrl: picture,
-        isActive: true,
-      }) as any;
+      throw new UnauthorizedException('Account not found. Contact administrator.');
     }
 
     const payload = { sub: user.id, email: user.email, role: user.role, isActive: user.isActive };

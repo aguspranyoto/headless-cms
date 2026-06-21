@@ -12,6 +12,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 
+  if (request.nextUrl.pathname === '/register') {
+    return NextResponse.redirect(new URL('/login', request.url), 308);
+  }
+
   if (token && request.nextUrl.pathname.startsWith('/admin')) {
     try {
       const payloadBase64 = token.split('.')[1];
@@ -27,6 +31,13 @@ export function middleware(request: NextRequest) {
       if (request.nextUrl.pathname.startsWith('/admin/users') && payload.role !== 'ADMIN') {
         return NextResponse.redirect(new URL('/admin', request.url));
       }
+
+      if (
+        payload.email === 'demo@agusp.com' &&
+        (request.nextUrl.pathname.endsWith('/new') || request.nextUrl.pathname.endsWith('/edit'))
+      ) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
     } catch (e) {
       console.error('Failed to parse JWT in middleware', e);
       const response = NextResponse.redirect(new URL('/login', request.url));
@@ -39,5 +50,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/login'],
+  matcher: ['/admin/:path*', '/login', '/register'],
 };

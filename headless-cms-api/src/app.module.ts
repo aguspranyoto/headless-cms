@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { APP_GUARD } from '@nestjs/core';
+import { DemoReadonlyGuard } from './auth/guards/demo-readonly.guard';
 import { DatabaseModule } from './common/database/database.module';
 
 import { UsersModule } from './users/users.module';
@@ -27,6 +29,12 @@ import { ExperiencesModule } from './experiences/experiences.module';
     ExperiencesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: DemoReadonlyGuard,
+    },
+  ],
 })
 export class AppModule {}

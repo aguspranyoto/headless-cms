@@ -7,6 +7,7 @@ import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useIsDemo } from '@/hooks/useIsDemo';
 import type { Category } from '@/types';
 
 const columns: ColumnDef<Category>[] = [
@@ -40,6 +41,7 @@ const columns: ColumnDef<Category>[] = [
 export default function CategoriesPage() {
   const [page, setPage] = useState(1);
   const pageSize = 10;
+  const isDemo = useIsDemo();
 
   const { data, isLoading } = useQuery({
     queryKey: ['categories', page, pageSize],
@@ -50,11 +52,17 @@ export default function CategoriesPage() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Categories</h1>
-        <Button asChild>
-          <Link href="/admin/categories/new">
+        {isDemo ? (
+          <Button disabled className="cursor-not-allowed opacity-50">
             + Add Category
-          </Link>
-        </Button>
+          </Button>
+        ) : (
+          <Button asChild>
+            <Link href="/admin/categories/new">
+              + Add Category
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<Category>

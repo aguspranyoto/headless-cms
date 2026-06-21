@@ -7,6 +7,7 @@ import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
+import { useIsDemo } from '@/hooks/useIsDemo';
 import type { Post } from '@/types';
 
 const columns: ColumnDef<Post>[] = [
@@ -47,6 +48,7 @@ export function PostsClient({
 }) {
   const [page, setPage] = useState(initialPage);
   const pageSize = 10;
+  const isDemo = useIsDemo();
 
   const { data, isLoading } = useQuery({
     queryKey: ['posts', page, pageSize],
@@ -58,11 +60,17 @@ export function PostsClient({
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Posts</h1>
-        <Button asChild>
-          <Link href="/admin/posts/new">
+        {isDemo ? (
+          <Button disabled className="cursor-not-allowed opacity-50">
             + Add Post
-          </Link>
-        </Button>
+          </Button>
+        ) : (
+          <Button asChild>
+            <Link href="/admin/posts/new">
+              + Add Post
+            </Link>
+          </Button>
+        )}
       </div>
       <div className="bg-card rounded-lg shadow-sm border">
         <DataTable<Post>
