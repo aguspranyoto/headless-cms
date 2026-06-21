@@ -12,7 +12,11 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      process.env.NEXT_PUBLIC_APP_URL,
+    ].filter(Boolean) as string[],
     credentials: true,
   });
 
