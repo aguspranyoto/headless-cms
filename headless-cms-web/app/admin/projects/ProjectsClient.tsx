@@ -64,7 +64,7 @@ export function ProjectsClient({
       id: 'actions',
       header: 'Action',
       cell: (info) => (
-        <div className="flex justify-end">
+        <div className="flex">
           {isDemo ? (
             <span className="text-gray-400 cursor-not-allowed opacity-50 text-sm">Edit</span>
           ) : (

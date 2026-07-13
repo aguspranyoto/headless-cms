@@ -40,11 +40,9 @@ const columns: ColumnDef<Category>[] = [
     id: 'actions',
     header: 'Action',
     cell: ({ row }) => (
-      <Button variant="ghost" size="sm" asChild className="h-8 text-muted-foreground hover:text-primary">
-        <Link href={`/admin/categories/${row.original.id}/edit`}>
-          Edit
-        </Link>
-      </Button>
+      <Link href={`/admin/categories/${row.original.id}/edit`} className="text-primary hover:underline text-sm">
+        Edit
+      </Link>
     ),
   },
 ];

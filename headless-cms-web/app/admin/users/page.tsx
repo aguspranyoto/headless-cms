@@ -64,9 +64,9 @@ export default function UsersPage() {
       id: 'actions',
       header: 'Action',
       cell: ({ row }) => (
-        <Button variant="ghost" size="sm" onClick={() => setSelectedUser(row.original)} className="h-8 text-muted-foreground hover:text-primary">
+        <div onClick={() => setSelectedUser(row.original)} className="text-primary hover:underline text-sm">
           Edit
-        </Button>
+        </div>
       ),
     },
   ], []);
@@ -92,10 +92,10 @@ export default function UsersPage() {
           isLoading={isLoading}
         />
       </div>
-      <EditUserModal 
-        user={selectedUser} 
-        isOpen={!!selectedUser} 
-        onClose={() => setSelectedUser(null)} 
+      <EditUserModal
+        user={selectedUser}
+        isOpen={!!selectedUser}
+        onClose={() => setSelectedUser(null)}
       />
     </div>
   );
