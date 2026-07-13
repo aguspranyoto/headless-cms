@@ -36,6 +36,17 @@ const columns: ColumnDef<Category>[] = [
     header: 'Created',
     cell: (info) => new Date(info.getValue() as string).toLocaleDateString(),
   },
+  {
+    id: 'actions',
+    header: 'Action',
+    cell: ({ row }) => (
+      <Button variant="ghost" size="sm" asChild className="h-8 text-muted-foreground hover:text-primary">
+        <Link href={`/admin/categories/${row.original.id}/edit`}>
+          Edit
+        </Link>
+      </Button>
+    ),
+  },
 ];
 
 export default function CategoriesPage() {

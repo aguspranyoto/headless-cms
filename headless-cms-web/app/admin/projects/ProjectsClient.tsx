@@ -62,7 +62,7 @@ export function ProjectsClient({
     },
     {
       id: 'actions',
-      header: '',
+      header: 'Action',
       cell: (info) => (
         <div className="flex justify-end">
           {isDemo ? (

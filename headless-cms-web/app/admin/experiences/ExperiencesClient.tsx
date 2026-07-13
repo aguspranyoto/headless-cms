@@ -61,7 +61,7 @@ export function ExperiencesClient({
     },
     {
       id: 'actions',
-      header: '',
+      header: 'Action',
       cell: (info) => (
         <div className="flex justify-end">
           {isDemo ? (

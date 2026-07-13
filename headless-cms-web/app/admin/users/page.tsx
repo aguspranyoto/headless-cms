@@ -9,7 +9,6 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useState, useMemo } from 'react';
 import type { User } from '@/types';
 import { EditUserModal } from '@/components/EditUserModal';
-import { Pencil } from 'lucide-react';
 
 
 export default function UsersPage() {
@@ -63,9 +62,10 @@ export default function UsersPage() {
     },
     {
       id: 'actions',
+      header: 'Action',
       cell: ({ row }) => (
-        <Button variant="ghost" size="icon" onClick={() => setSelectedUser(row.original)} className="h-8 w-8 text-muted-foreground hover:text-primary">
-          <Pencil className="h-4 w-4" />
+        <Button variant="ghost" size="sm" onClick={() => setSelectedUser(row.original)} className="h-8 text-muted-foreground hover:text-primary">
+          Edit
         </Button>
       ),
     },

@@ -50,7 +50,7 @@ export function ServicesClient({
     },
     {
       id: 'actions',
-      header: '',
+      header: 'Action',
       cell: (info) => (
         <div className="flex justify-end">
           {isDemo ? (
