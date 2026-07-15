@@ -89,6 +89,9 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
+              <p className="text-sm text-muted-foreground text-center">
+                Tips: login with <span className="font-medium">demo@agusp.com</span> with password <span className="font-medium">"demodemo"</span> to login with read-only mode
+              </p>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? 'Logging in...' : 'Sign in'}
               </Button>
